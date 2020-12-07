@@ -41,7 +41,7 @@ for i in range(0,6):
 print(f'男生最高分={manmax},女生最高分={womanmax}')
 
 
-#或使用score_inner和socre_inner.loc
+
 l2=[0,0,0,0,0,0,0]
 for i in range(0,7):
     if score.iat[i,6]>=270:
