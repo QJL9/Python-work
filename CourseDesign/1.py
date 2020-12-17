@@ -17,14 +17,18 @@ try:
         global data,text
         try:
             inputfilenamevar = filedialog.askopenfilename(title='choose input file')
+            if inputfilenamevar=='':
+                return
             data = pd.read_csv(inputfilenamevar)
             data.dropna(axis=0, how='any')
-            text.insert("end -1 chars", data.head(5))
-            text.insert("end -1 chars", data.tail(2))
+            text.insert("end", data.head(5))
+            text.insert("end", '\n')
+            text.insert("end", data.tail(2))
             # print(data.head(5))
             # print(data.tail(2))
         except IOError:
             messagebox.showerror('Error!','文件读取出错，请检查输入路径')
+            
         else:
             messagebox.showinfo(message='success!')
 
@@ -33,7 +37,8 @@ try:
     def command2():
         
         outputfilename = filedialog.asksaveasfilename(title='choose output file')
-        
+        if outputfilename=='':
+            return
         global data
         data1 = data[['Id','LotShape','LotArea','OverallCond',
                         'YrSold','SalePrice']]
@@ -41,6 +46,7 @@ try:
             data1.to_csv(outputfilename,sep=' ',index=0)
         except IOError:
             messagebox.showerror('Error!','文件输出出错')
+            
         else:
             messagebox.showinfo(message='success!')
     # # with open('./house.sale.price.csv','w') as f:
@@ -51,16 +57,19 @@ try:
 
     def command3():
         inputfilenamevar = filedialog.askopenfilename(title='choose input file')
+        if inputfilenamevar=='':
+            return
+
         try:
             price=pd.read_csv(inputfilenamevar,sep=' ')
         except IOError:
             messagebox.showerror('Error!','文件读取出错，请检查输入路径')
-    #
-    #   另一种方法
-    #   unitprice = (price['SalePrice']/price['LotArea'])
-    #   price['unitPrice']=unitPrice
-    #
-    #
+        #
+        #   另一种方法
+        #   unitprice = (price['SalePrice']/price['LotArea'])
+        #   price['unitPrice']=unitPrice
+        #
+        #
         unitPrice=[]
         for i in price['SalePrice']:
             for j in price['LotArea']:
@@ -69,6 +78,8 @@ try:
         price['unitPrice']=unitPrice
         
         outputfilename = filedialog.asksaveasfilename(title='choose output file')
+        if outputfilename=='':
+            return
         try:
             price.to_excel(outputfilename,index=0)
         except IOError:
@@ -78,8 +89,11 @@ try:
 
     def command4():
         inputfilenamevar = filedialog.askopenfilename(title='choose input file')
-        
+        if inputfilenamevar=='':
+            return        
         outputfilename = filedialog.asksaveasfilename(title='choose output file')
+        if outputfilename=='':
+            return
         try:
             data3=pd.read_excel(inputfilenamevar)
         except IOError:
@@ -109,7 +123,11 @@ try:
 
     def command5():
         inputfilenamevar = filedialog.askopenfilename(title='choose input file')
+        if inputfilenamevar=='':
+            return
         outputfilename = filedialog.asksaveasfilename(title='choose output file')
+        if outputfilename=='':
+            return
         
         try:
             data3=pd.read_excel(inputfilenamevar)
@@ -130,7 +148,7 @@ try:
         plt.legend("LotShap-OverallCond")
         try:
             plt.savefig(outputfilename,dpi=300)
-            plt.show()
+            #plt.show()
         except IOError:
             messagebox.showerror('Error!','文件输出出错')
         else:
@@ -138,7 +156,7 @@ try:
         
     #widgets
 
-    fram = ttk.Frame(root,padding="5 10 10 5")
+    fram = ttk.Frame(root,padding="10 10 10 5")
 
     label1 = ttk.Label(fram, text="func1")
     label2 = ttk.Label(fram, text="func2")
@@ -155,7 +173,7 @@ try:
     # entry1 = ttk.Entry(fram, textvariable=evariable1, width=17)
     # entry2 = ttk.Entry(fram, textvariable=evariable2, width=17)
     # entry3 = ttk.Entry(fram, textvariable=evariable3, width=17)
-    text = tk.Text(fram, width=25, height=5)
+    text = tk.Text(fram, width=50, height=10)
 
     fram.grid(row=0,column=0,sticky=(tk.N, tk.S, tk.E,tk.W))
 
@@ -165,11 +183,11 @@ try:
     label4.grid(row=3,column=0)
     label5.grid(row=4,column=0)
 
-    btn1.grid(row=0,column=1)
-    btn2.grid(row=1,column=1)
-    btn3.grid(row=2,column=1)
-    btn4.grid(row=3,column=1)
-    btn5.grid(row=4,column=1)
+    btn1.grid(row=0,column=1,pady=5)
+    btn2.grid(row=1,column=1,pady=5)
+    btn3.grid(row=2,column=1,pady=5)
+    btn4.grid(row=3,column=1,pady=5)
+    btn5.grid(row=4,column=1,pady=5)
 
     text.grid(row=5,column=0,columnspan=2,sticky=(tk.N, tk.S, tk.E,tk.W))
 
@@ -178,9 +196,9 @@ try:
     fram.rowconfigure(2, weight=1)
     fram.rowconfigure(3, weight=1)
     fram.rowconfigure(4, weight=1)
+    fram.rowconfigure(5, weight=3)
     fram.columnconfigure(0, weight=1)
     fram.columnconfigure(1, weight=1)
-
 
     root.columnconfigure(0, weight=1)
     root.rowconfigure(0, weight=1)
